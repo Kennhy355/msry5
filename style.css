@@ -147,11 +147,19 @@ body {
 .scene {
     position: relative;
     z-index: 2;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 30px;
     padding: 20px;
+}
+
+/* Raise scene above the backdrop overlay so the letter is not dimmed */
+body.opened-active .scene {
+    z-index: 12;
 }
 
 /* ============================================================
@@ -296,25 +304,36 @@ body {
    LETTER (paper that slides out)
 ============================================================ */
 .letter {
-    position: absolute;
-    top: 12px;
-    left: 5%;
-    width: 90%;
-    height: 90%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 306px;
+    /* 90% of 340px envelope width */
+    height: 198px;
+    /* 90% of 220px envelope height */
+    margin-top: -99px;
+    /* center vertically: -height/2 */
+    margin-left: -153px;
+    /* center horizontally: -width/2, plus envelope's own centering */
     background: var(--paper-color);
     border-radius: 6px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     z-index: 4;
-    transform: translateY(0) scale(0.96);
+    transform: scale(0.96);
+    transform-origin: center center;
     opacity: 0;
     transition:
         transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+        width 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+        height 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+        margin 1.1s cubic-bezier(0.22, 1, 0.36, 1),
         opacity 0.6s ease,
         box-shadow 0.6s ease;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
 }
 
 /* Subtle paper texture using layered gradients */
@@ -331,54 +350,68 @@ body {
     pointer-events: none;
 }
 
-/* When opened: letter slides up and out of the envelope, becomes large & centered */
+/* When opened: letter expands from its envelope position into a
+   large, perfectly centered reading view. */
 .envelope.opened .letter {
     opacity: 1;
-    transform: translateY(-230px) scale(1.35);
-    box-shadow: 0 25px 60px rgba(224, 86, 124, 0.35);
+    width: min(560px, 90vw);
+    height: min(640px, 85vh);
+    margin-top: calc(min(640px, 85vh) / -2);
+    margin-left: calc(min(560px, 90vw) / -2);
+    transform: scale(1);
+    background: #ffffff;
+    box-shadow:
+        0 25px 60px rgba(224, 86, 124, 0.35),
+        0 0 80px rgba(255, 255, 255, 0.6),
+        0 0 120px rgba(255, 240, 245, 0.4);
     z-index: 10;
+    pointer-events: auto;
     transition-delay: 0.35s;
     /* waits for flap to start opening first */
 }
 
-/* On larger screens, scale up more dramatically for a "reading" view */
-@media (min-width: 600px) {
+/* Slightly larger reading area on bigger screens */
+@media (min-width: 900px) {
     .envelope.opened .letter {
-        transform: translateY(-260px) scale(1.55);
+        width: min(640px, 60vw);
+        height: min(680px, 80vh);
+        margin-top: calc(min(680px, 80vh) / -2);
+        margin-left: calc(min(640px, 60vw) / -2);
     }
 }
 
 .letter-content {
-    padding: 28px 24px;
+    padding: 36px 32px;
     text-align: center;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 14px;
+    gap: 18px;
     overflow-y: auto;
 }
 
 .letter-title {
-    font-size: 1.6rem;
+    font-size: 2rem;
     color: var(--accent-color);
     font-weight: 700;
     letter-spacing: 0.5px;
 }
 
 .letter-date {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #b88a9a;
     font-style: italic;
     letter-spacing: 1px;
 }
 
 .letter-message {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: var(--text-color);
-    min-height: 120px;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #1a1a1a;
+    font-weight: 500;
+    min-height: 160px;
     text-align: left;
 }
 
@@ -410,9 +443,28 @@ body {
 }
 
 /* ============================================================
-   REPLAY BUTTON
+   BACKDROP OVERLAY (dims background when letter is open)
 ============================================================ */
+.backdrop-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 10, 20, 0.75);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 8;
+    transition: opacity 0.8s ease;
+    transition-delay: 0.35s;
+}
+
+body.opened-active .backdrop-overlay {
+    opacity: 1;
+}
+
 .replay-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
     padding: 12px 28px;
     border: none;
     border-radius: 30px;
@@ -423,27 +475,20 @@ body {
     cursor: pointer;
     box-shadow: 0 6px 18px rgba(224, 86, 124, 0.35);
     opacity: 0;
-    transform: translateY(20px);
     pointer-events: none;
+    z-index: 20;
     transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
-    margin-top: 280px;
-}
-
-@media (min-width: 600px) {
-    .replay-btn {
-        margin-top: 320px;
-    }
 }
 
 .replay-btn.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
     pointer-events: auto;
 }
 
 .replay-btn:hover {
     background: #c8456a;
-    transform: translateY(-3px);
+    transform: translateX(-50%) translateY(-3px);
 }
 
 /* ============================================================
@@ -494,11 +539,11 @@ body {
     }
 
     .letter-title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
     }
 
     .letter-message {
-        font-size: 0.92rem;
+        font-size: 1rem;
         min-height: 140px;
     }
 
@@ -509,6 +554,9 @@ body {
     }
 
     .envelope.opened .letter {
-        transform: translateY(-200px) scale(1.25);
+        width: 92vw;
+        height: 80vh;
+        margin-left: -46vw;
+        margin-top: -40vh;
     }
 }

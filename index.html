@@ -10,15 +10,19 @@
 
 <body>
 
-    <!-- Floating background decorations (hearts, sparkles) -->
+    <!-- Background decorations (hearts, sparkles) -->
     <div class="background-decor" id="backgroundDecor"></div>
 
+    <!-- Dim overlay shown behind the letter once opened -->
+    <div class="backdrop-overlay"></div>
+
     <!-- Music toggle button -->
-    <button class="music-btn" id="musicBtn" title="Play/Pause Music">
-        🎵
+    <button class="music-btn" id="musicBtn" title="Play Music">
+        ▶
     </button>
-    <audio id="bgMusic" loop>
-        <source src="music.mp3" type="audio/mpeg" />
+    <audio id="bgMusic" loop preload="auto" autoplay>
+        <source src="Isa Lang - Arthur Nery Instrumental.webm" type="audio/webm" />
+        <source src="Isa Lang - Arthur Nery Instrumental.mp4" type="audio/mp4" />
     </audio>
 
     <div class="scene">
@@ -32,17 +36,18 @@
                 <div class="letter-content">
                     <h1 class="letter-title">Happy Monthsary ❤️</h1>
 
-                    <p class="letter-date" id="letterDate">June 12, 2026</p>
+                    <p class="letter-date" id="letterDate">June 13, 2026</p>
 
                     <p class="letter-message" id="letterMessage">
-                        My love, every day with you feels like a beautiful new chapter. Thank you for the laughter, the
-                        comfort, and the quiet moments we share. Here's to many more months and years of loving you. You
-                        make my world brighter just by being in it.
+                        Happy 5th monthsary mylovee!! Thank you for everything you did for me. Thankyou
+                        for staying even though we fight a lot. Thank you for fixing us, Thankyou for everything.
+                        We are much better now and i hope we'll keep better and better more. I LOVE YOU SO
+                        MUCH!!!💞💞😍🙊😋
                     </p>
 
                     <div class="letter-signature">
-                        <p>Forever yours,</p>
-                        <p class="signature-name">Your Love 💕</p>
+                        <p>Ako lang dapat</p>
+                        <p class="signature-name">Love for you 💕</p>
                     </div>
                 </div>
             </div>
@@ -61,7 +66,7 @@
         </div>
 
         <!-- Replay button (hidden until opened) -->
-        <button class="replay-btn" id="replayBtn">↺ Replay Animation</button>
+        <button class="replay-btn" id="replayBtn">open again</button>
 
     </div>
 
