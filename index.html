@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Monthsary ❤️</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- Floating background decorations (hearts, sparkles) -->
+    <div class="background-decor" id="backgroundDecor"></div>
+
+    <!-- Music toggle button -->
+    <button class="music-btn" id="musicBtn" title="Play/Pause Music">
+        🎵
+    </button>
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="scene">
+
+        <!-- ===================== ENVELOPE ===================== -->
+        <div class="envelope" id="envelope">
+            <div class="envelope-back"></div>
+
+            <!-- Letter that slides out -->
+            <div class="letter" id="letter">
+                <div class="letter-content">
+                    <h1 class="letter-title">Happy Monthsary ❤️</h1>
+
+                    <p class="letter-date" id="letterDate">June 12, 2026</p>
+
+                    <p class="letter-message" id="letterMessage">
+                        My love, every day with you feels like a beautiful new chapter. Thank you for the laughter, the
+                        comfort, and the quiet moments we share. Here's to many more months and years of loving you. You
+                        make my world brighter just by being in it.
+                    </p>
+
+                    <div class="letter-signature">
+                        <p>Forever yours,</p>
+                        <p class="signature-name">Your Love 💕</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Envelope front pocket -->
+            <div class="envelope-front"></div>
+
+            <!-- Envelope flap (top triangle) -->
+            <div class="envelope-flap" id="envelopeFlap"></div>
+
+            <!-- Heart seal on the flap -->
+            <div class="envelope-seal" id="envelopeSeal">💌</div>
+
+            <!-- Hint text -->
+            <div class="click-hint" id="clickHint">Click to open</div>
+        </div>
+
+        <!-- Replay button (hidden until opened) -->
+        <button class="replay-btn" id="replayBtn">↺ Replay Animation</button>
+
+    </div>
+
+    <!-- Container for floating hearts triggered on open -->
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
